@@ -5,61 +5,14 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = [ "nvidia" ];
-
-  hardware.nvidia = {
-
-    # Modesetting is required.
-    modesetting.enable = true;
-
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    # Enable this if you have graphical corruption issues or application crashes after waking
-    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
-    # of just the bare essentials.
-    powerManagement.enable = false;
-
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = false;
-
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of 
-    # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
-    # Only available from driver 515.43.04+
-    # Currently alpha-quality/buggy, so false is currently the recommended setting.
-    open = false;
-
-    # Enable the Nvidia settings menu,
-    # accessible via `nvidia-settings`.
-    nvidiaSettings = true;
-
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-    prime = {
-      offload.enable = true; # Enable PRIME offloading
-      intelBusId = "PCI:0:2:0"; # lspci | grep VGA | grep Intel
-      nvidiaBusId = "PCI:1:0:0"; # lspci | grep VGA | grep NVIDIA
-    };
-  };
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -94,7 +47,6 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -117,94 +69,26 @@
   users.users.jd = {
     isNormalUser = true;
     description = "JD";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-
-      #  thunderbird
-      helix
+    #  thunderbird
+    git
     ];
   };
+
+  # Install firefox.
+  programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    liberation_ttf
-    fira-code
-    fira-code-symbols
-    mplus-outline-fonts.githubRelease
-    dina-font
-    proggyfonts
-    inconsolata
-    source-code-pro
-  ];
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
-    pkgs.marwaita
-    pkgs.amber-theme
-    pkgs.stilo-themes
-    pkgs.zuki-themes
-    pkgs.plano-theme
-    pkgs.numix-gtk-theme
-    pkgs.greybird
-    pkgs.yaru-theme
-    pkgs.gruvbox-dark-gtk
-    pkgs.zsh
-    pkgs.oh-my-zsh
-    pkgs.firefox
-    pkgs.htop
-    pkgs.btop
-    pkgs.git
-    pkgs.wget
-    pkgs.alacritty
-    pkgs.rustup
-    pkgs.obs-studio
-    pkgs.gruvbox-gtk-theme
-    pkgs.bat
-    pkgs.lsd
-    pkgs.zoxide
-    pkgs.gcc
-    pkgs.clang
-    pkgs.pavucontrol
-    pkgs.ncurses
-    pkgs.nix-ld
+  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  #  wget
   ];
-  # for global user
-  users.defaultUserShell = pkgs.zsh;
 
-  # for a specific user
-  users.users.jd.shell = pkgs.zsh;
-  # users.users.officialrajdeepsingh.shell = pkgs.zsh;
-
-  # enable zsh and oh my zsh
-  programs = {
-    zsh = {
-      enable = true;
-      autosuggestions.enable = true;
-      zsh-autoenv.enable = true;
-      syntaxHighlighting.enable = true;
-      ohMyZsh = {
-        enable = true;
-        theme = "af-magic";
-        plugins = [
-          "git"
-          "npm"
-          "history"
-          "node"
-          "rust"
-        ];
-      };
-    };
-  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -230,5 +114,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
+
 }
