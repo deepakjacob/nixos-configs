@@ -124,8 +124,6 @@
       "wheel"
     ];
     packages = with pkgs; [
-
-      #  thunderbird
       # neofetch
       # helix
     ];
@@ -183,8 +181,12 @@
           "history"
           "node"
           "rust"
+          "zoxide"
         ];
       };
+      shellInit = ''
+        eval "$(zoxide init zsh)"
+      '';
     };
   };
   # Some programs need SUID wrappers, can be configured further or are
