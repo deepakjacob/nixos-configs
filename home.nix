@@ -17,22 +17,46 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = [
-    pkgs.xclip
-    pkgs.git
-    pkgs.firefox
-    pkgs.greybird
-    pkgs.oh-my-zsh
-    pkgs.firefox
-    pkgs.htop
-    pkgs.btop
-    pkgs.wget
-    pkgs.alacritty
-    pkgs.rustup
-    pkgs.obs-studio
-    pkgs.bat
-    pkgs.lsd
-    pkgs.zoxide
+  home.packages = with pkgs; [
+    #fonts
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    # proggyfonts
+    inconsolata
+    source-code-pro
+    # other programs
+    neofetch
+    helix
+    elementary-xfce-icon-theme
+    papirus-icon-theme
+    gruvbox-plus-icons
+    xclip
+    git
+    firefox
+    greybird
+    oh-my-zsh
+    firefox
+    htop
+    btop
+    wget
+    alacritty
+    rustup
+    obs-studio
+    bat
+    lsd
+    zoxide
+    zip
+    unzip
+    p7zip
+    ripgrep
+    jq
+    cowsay
     
 
     # # Adds the 'hello' command to your environment. It prints a friendly
@@ -53,7 +77,71 @@
     # '')
 
   ];
+  # alacritty - a cross-platform, GPU-accelerated terminal emulator
+  programs.alacritty = {
+      enable = true;
+      # custom settings
+      settings = {
+        env.TERM = "xterm-256color";
+        font = {
+          size = 12;
+          normal.family = "source code pro";
+          # draw_bold_text_with_bright_colors = true;
+         };
+        scrolling.multiplier = 5;
+        selection.save_to_clipboard = true;
+     };
+  };
+  
 
+  programs.helix = {
+    enable = true;
+    settings = {
+      
+    theme = "gruvbox_dark_hard";
+    editor = {
+      line-number = "relative";
+      mouse = true;
+      true-color = true;
+      color-modes = true;
+      lsp = {
+        display-messages = true;
+      };
+      cursor-shape = {
+        insert = "bar";
+        normal = "block";
+        select = "underline";
+      };
+
+      file-picker = {
+        hidden = true;
+      };
+
+      statusline = {
+        left = ["mode" "spinner" "version-control"];
+        center = ["file-name"];
+        right = [
+          "diagnostics"
+          "selections"
+          "position"
+          "file-encoding"
+          "file-line-ending"
+          "file-type"
+          "file-modification-indicator"
+        ];
+        separator = "│";
+        mode.normal = "NOR";
+        mode.insert = "INS";
+        mode.select = "SEL";
+      };
+      indent-guides = {
+        render = true;
+        character = "|";
+        skip-levels = 1;
+      };
+    };
+    };
+  };
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {

@@ -126,8 +126,8 @@
     packages = with pkgs; [
 
       #  thunderbird
-      neofetch
-      helix
+      # neofetch
+      # helix
     ];
   };
 
@@ -135,23 +135,24 @@
   nixpkgs.config.allowUnfree = true;
 
   fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    liberation_ttf
-    fira-code
-    fira-code-symbols
-    mplus-outline-fonts.githubRelease
-    dina-font
+  #   noto-fonts
+  #   noto-fonts-cjk
+  #   noto-fonts-emoji
+  #   liberation_ttf
+  #   fira-code
+  #   fira-code-symbols
+  #   mplus-outline-fonts.githubRelease
+  #   dina-font
     proggyfonts
-    inconsolata
-    source-code-pro
+  #   inconsolata
+  #   source-code-pro
   ];
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
+    pkgs.nil
     pkgs.zsh
     pkgs.gcc
     pkgs.clang
